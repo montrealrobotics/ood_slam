@@ -17,7 +17,7 @@ def run_orbslam2(sequence):
 
     command = (
         f"cd {ORB_SLAM_FOLDER} && ./Examples/Stereo/stereo_kitti Vocabulary/ORBvoc.txt {yaml_file} {dataset_folder}/kitti/odometry_gray/sequences/{sequence} "
-        f" && mv CameraTrajectory.txt {dataset_folder}/orbslam2_output/{sequence}_CameraTrajectory.txt && exit"
+        f" && mv CameraTrajectory.txt /home/adam/Documents/research_internship/OOD_SLAM/ood_slam/src/results/orbslam_poses/stereo/{sequence}.txt && exit"
     )
 
     subprocess.run(command, shell=True)
