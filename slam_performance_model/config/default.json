@@ -1,0 +1,23 @@
+{
+    "dataset": {
+      "train_data_dir": "/scratch/adamb14/pytorch_data/orb_slam/stereo/train",
+      "val_data_dir": "/scratch/adamb14/pytorch_data/orb_slam/stereo/val",
+      "batch_size": 32,
+      "sequence_length": 1
+    },
+    "model": {
+      "name": "AlexNet", 
+      "num_classes": 10,
+      "weights_path": "/scratch/adamb14/model_weigths/alexnet_weights.pth"
+    },
+    "training": {
+      "num_epochs": 25,
+      "learning_rate": 0.001,
+      "loss_function": "MSELoss"
+    },
+    "wandb": {
+      "project_name": "slam_performance_model",
+      "entity": "your_wandb_username"
+    }
+  }
+  

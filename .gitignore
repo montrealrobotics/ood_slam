@@ -1,0 +1,6 @@
+*.pth
+.cache
+.venv
+slam_performance_model/wandb/*
+dataset_generation/src/results/*
+env/*
