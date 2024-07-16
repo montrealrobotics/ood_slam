@@ -11,7 +11,7 @@ import torch.optim as optim
 import torch.nn as nn
 from torchvision import transforms
 from torch.utils.data import DataLoader
-from models.alexNetRegression import AlexNetSLAM
+from models.alexNetClassifier import AlexNetSLAMClassifier
 from utils.dataloader import get_dataloaders
 import wandb
 
@@ -52,13 +52,13 @@ def train_model(config):
 
     train_loader, val_loader = get_dataloaders(train_dir, val_dir, batch_size, sequence_length, train_transforms, val_transforms)
 
-    model = AlexNetSLAM(config['model']['weights_path'], num_classes=2)
+    model = AlexNetSLAMClassifier(config['model']['weights_path'], num_classes=5)
     model = model.to(device)
 
     learning_rate = config['training']['learning_rate']
     num_epochs = config['training']['num_epochs']
 
-    criterion = nn.MSELoss()
+    criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
     # Log hyperparameters
@@ -75,11 +75,13 @@ def train_model(config):
         for data, labels in train_loader:
             left_images, right_images = data
             images = torch.cat((left_images, right_images), dim=1).to(device)
-            labels = labels.to(device)
-
+            labels1, labels2 = labels[:, 0], labels[:, 1]
+            labels1, labels2 = labels1.to(device), labels2.to(device)
+            
             optimizer.zero_grad()
-            outputs = model(images)
-            loss = criterion(outputs, labels)
+            outputs1, outputs2 = model(images)
+            loss1, loss2 = criterion(outputs1, labels1), criterion(outputs2, labels2)
+            loss = loss1 + loss2 # Not sure about this step
             loss.backward()
             optimizer.step()
             running_loss += loss.item()
@@ -95,11 +97,13 @@ def train_model(config):
             for data, labels in val_loader:
                 left_images, right_images = data
                 images = torch.cat((left_images, right_images), dim=1).to(device)
-                labels = labels.to(device)
+                labels1, labels2 = labels[:, 0], labels[:, 1]
+                labels1, labels2 = labels1.to(device), labels2.to(device)
 
-                outputs = model(images)
-                loss = criterion(outputs, labels)
-                val_loss += loss.item()
+                outputs1, outputs2 = model(images)
+                loss1 = criterion(outputs1, labels1)
+                loss2 = criterion(outputs2, labels2)
+                val_loss += (loss1 + loss2).item()
 
         epoch_val_loss = val_loss / len(val_loader)
         print(f"Validation Loss: {epoch_val_loss}")
