@@ -4,6 +4,7 @@ from torch.utils.data import Dataset, DataLoader
 from PIL import Image
 import numpy as np
 from torchvision import transforms
+import matplotlib.pyplot as plt
 
 class StereoSLAMDataset(Dataset):
     def __init__(self, data_dir, sequence_length=1, transform=None):
@@ -84,3 +85,52 @@ def get_dataloaders(train_dir, val_dir, batch_size, sequence_length, train_trans
     val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False, num_workers=num_workers)
     
     return train_loader, val_loader
+
+
+if __name__ == "__main__":
+    plt.ion()
+
+    train_dir = "/media/adam/T9/ood_slam_data/datasets/pytorch_data/orb_slam/stereo/train"
+    val_dir = "/media/adam/T9/ood_slam_data/datasets/pytorch_data/orb_slam/stereo/val"
+    batch_size = 64
+    sequence_length = 1
+
+    train_transforms = transforms.Compose([
+        transforms.Resize((224, 224)),
+        transforms.ToTensor(),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+    ])
+    
+    val_transforms = transforms.Compose([
+        transforms.Resize((224, 224)),
+        transforms.ToTensor(),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+    ])
+
+    train_loader, val_loader = get_dataloaders(train_dir, val_dir, batch_size, sequence_length, train_transforms, val_transforms)
+
+    # for data, labels in train_loader:
+    #     left_images, right_images = data
+    #     images = torch.cat((left_images, right_images), dim=1)
+    #     labels1, labels2 = labels[:, 0], labels[:, 1]
+
+    #     print(images)
+
+    # # Display image and label.
+    # train_features, train_labels = next(iter(train_loader))
+    # print(f"Feature batch shape: {train_features[0].size()}")
+    # print(f"Labels batch shape: {train_labels.size()}")
+    # left_images, right_images = train_features
+    
+    # img = left_images[0]
+
+    # img = img.permute(1, 2, 0)
+    # img = (img - img.min()) / (img.max() - img.min())
+    # img = img.numpy()
+    # label1 = train_labels[0]
+    # plt.imshow(img)
+    # plt.axis('off')
+    # plt.savefig('output.png')
+    # #plt.show()
+    # print(f"Label: {label1}")
+        

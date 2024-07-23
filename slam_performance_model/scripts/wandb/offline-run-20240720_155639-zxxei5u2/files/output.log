@@ -1,0 +1,40 @@
+Using device: cpu
+Epoch 1/25, Train loss: 210.79511050607675
+Validation Loss: 3.1762359487005027
+Epoch 2/25, Train loss: 194.26232509676404
+Validation Loss: 3.0506120345678673
+Epoch 3/25, Train loss: 174.91542534812345
+Validation Loss: 2.964268583849252
+Epoch 4/25, Train loss: 139.19839033969612
+Validation Loss: 3.074680549552642
+Epoch 5/25, Train loss: 86.14265702966836
+Validation Loss: 3.6218248555459174
+Epoch 6/25, Train loss: 37.27302753093631
+Validation Loss: 4.928598267845361
+Epoch 7/25, Train loss: 16.310329196461016
+Validation Loss: 6.279321036424982
+Epoch 8/25, Train loss: 9.683712374728383
+Validation Loss: 6.585823650460646
+Epoch 9/25, Train loss: 6.423362521634149
+Validation Loss: 6.840339178780475
+Epoch 10/25, Train loss: 5.102544008695406
+Validation Loss: 7.2855842749038375
+Epoch 11/25, Train loss: 4.15907515392351
+Validation Loss: 7.939714807702835
+Epoch 12/25, Train loss: 4.647957252307588
+Validation Loss: 7.145575750304992
+Epoch 13/25, Train loss: 3.693807565393638
+Validation Loss: 8.631774912397546
+Traceback (most recent call last):
+  File "/home/adam/Documents/research_internship/ood_slam/slam_performance_model/scripts/train.py", line 145, in <module>
+    train_model(config)
+  File "/home/adam/Documents/research_internship/ood_slam/slam_performance_model/scripts/train.py", line 100, in train_model
+    loss.backward()
+  File "/home/adam/Documents/research_internship/ood_slam/env/lib/python3.12/site-packages/torch/_tensor.py", line 525, in backward
+    torch.autograd.backward(
+  File "/home/adam/Documents/research_internship/ood_slam/env/lib/python3.12/site-packages/torch/autograd/__init__.py", line 267, in backward
+    _engine_run_backward(
+  File "/home/adam/Documents/research_internship/ood_slam/env/lib/python3.12/site-packages/torch/autograd/graph.py", line 744, in _engine_run_backward
+    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt

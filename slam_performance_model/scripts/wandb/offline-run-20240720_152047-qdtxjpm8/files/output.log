@@ -1,0 +1,66 @@
+Using device: cpu
+tensor(3.2237, grad_fn=<AddBackward0>)
+tensor(11.6431, grad_fn=<AddBackward0>)
+tensor(3.2097, grad_fn=<AddBackward0>)
+tensor(3.2050, grad_fn=<AddBackward0>)
+tensor(3.2513, grad_fn=<AddBackward0>)
+tensor(3.2288, grad_fn=<AddBackward0>)
+tensor(3.2295, grad_fn=<AddBackward0>)
+tensor(3.2119, grad_fn=<AddBackward0>)
+tensor(3.2240, grad_fn=<AddBackward0>)
+tensor(3.2058, grad_fn=<AddBackward0>)
+tensor(3.2142, grad_fn=<AddBackward0>)
+tensor(3.2188, grad_fn=<AddBackward0>)
+tensor(3.2489, grad_fn=<AddBackward0>)
+tensor(3.2276, grad_fn=<AddBackward0>)
+tensor(3.2251, grad_fn=<AddBackward0>)
+tensor(3.2206, grad_fn=<AddBackward0>)
+tensor(3.2370, grad_fn=<AddBackward0>)
+tensor(3.2217, grad_fn=<AddBackward0>)
+tensor(3.2238, grad_fn=<AddBackward0>)
+tensor(3.2233, grad_fn=<AddBackward0>)
+tensor(3.2212, grad_fn=<AddBackward0>)
+tensor(3.2242, grad_fn=<AddBackward0>)
+tensor(3.2214, grad_fn=<AddBackward0>)
+tensor(3.2163, grad_fn=<AddBackward0>)
+tensor(3.2166, grad_fn=<AddBackward0>)
+tensor(3.2199, grad_fn=<AddBackward0>)
+tensor(3.2212, grad_fn=<AddBackward0>)
+tensor(3.2180, grad_fn=<AddBackward0>)
+tensor(3.2221, grad_fn=<AddBackward0>)
+tensor(3.2136, grad_fn=<AddBackward0>)
+tensor(3.2162, grad_fn=<AddBackward0>)
+tensor(3.2176, grad_fn=<AddBackward0>)
+tensor(3.2165, grad_fn=<AddBackward0>)
+tensor(3.2229, grad_fn=<AddBackward0>)
+tensor(3.2258, grad_fn=<AddBackward0>)
+tensor(3.2193, grad_fn=<AddBackward0>)
+tensor(3.2242, grad_fn=<AddBackward0>)
+tensor(3.2193, grad_fn=<AddBackward0>)
+tensor(3.2203, grad_fn=<AddBackward0>)
+tensor(3.2196, grad_fn=<AddBackward0>)
+tensor(3.2209, grad_fn=<AddBackward0>)
+tensor(3.2229, grad_fn=<AddBackward0>)
+tensor(3.2174, grad_fn=<AddBackward0>)
+tensor(3.2228, grad_fn=<AddBackward0>)
+tensor(3.2238, grad_fn=<AddBackward0>)
+tensor(3.2174, grad_fn=<AddBackward0>)
+tensor(3.2211, grad_fn=<AddBackward0>)
+Traceback (most recent call last):
+  File "/home/adam/Documents/research_internship/ood_slam/slam_performance_model/scripts/train.py", line 145, in <module>
+    train_model(config)
+  File "/home/adam/Documents/research_internship/ood_slam/slam_performance_model/scripts/train.py", line 104, in train_model
+    optimizer.step()
+  File "/home/adam/Documents/research_internship/ood_slam/env/lib/python3.12/site-packages/torch/optim/optimizer.py", line 391, in wrapper
+    out = func(*args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/adam/Documents/research_internship/ood_slam/env/lib/python3.12/site-packages/torch/optim/optimizer.py", line 76, in _use_grad
+    ret = func(self, *args, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/adam/Documents/research_internship/ood_slam/env/lib/python3.12/site-packages/torch/optim/adam.py", line 168, in step
+    adam(
+  File "/home/adam/Documents/research_internship/ood_slam/env/lib/python3.12/site-packages/torch/optim/adam.py", line 318, in adam
+    func(params,
+  File "/home/adam/Documents/research_internship/ood_slam/env/lib/python3.12/site-packages/torch/optim/adam.py", line 394, in _single_tensor_adam
+    exp_avg_sq.mul_(beta2).addcmul_(grad, grad.conj(), value=1 - beta2)
+KeyboardInterrupt

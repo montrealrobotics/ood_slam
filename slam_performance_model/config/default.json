@@ -2,7 +2,7 @@
     "dataset": {
       "train_data_dir": "/media/adam/T9/ood_slam_data/datasets/pytorch_data/orb_slam/stereo/train",
       "val_data_dir": "/media/adam/T9/ood_slam_data/datasets/pytorch_data/orb_slam/stereo/val",
-      "batch_size": 32,
+      "batch_size": 64,
       "sequence_length": 1
     },
     "model": {

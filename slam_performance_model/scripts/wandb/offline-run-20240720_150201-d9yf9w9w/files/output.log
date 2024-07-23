@@ -1,0 +1,38 @@
+Using device: cpu
+tensor(3.2218, grad_fn=<AddBackward0>)
+tensor(13.0738, grad_fn=<AddBackward0>)
+tensor(3.4651, grad_fn=<AddBackward0>)
+tensor(3.2526, grad_fn=<AddBackward0>)
+tensor(3.2257, grad_fn=<AddBackward0>)
+tensor(3.2187, grad_fn=<AddBackward0>)
+tensor(3.2117, grad_fn=<AddBackward0>)
+tensor(3.2221, grad_fn=<AddBackward0>)
+tensor(3.2167, grad_fn=<AddBackward0>)
+tensor(3.2225, grad_fn=<AddBackward0>)
+tensor(3.2142, grad_fn=<AddBackward0>)
+tensor(3.2178, grad_fn=<AddBackward0>)
+tensor(3.2235, grad_fn=<AddBackward0>)
+tensor(3.2193, grad_fn=<AddBackward0>)
+tensor(3.2146, grad_fn=<AddBackward0>)
+tensor(3.2184, grad_fn=<AddBackward0>)
+tensor(3.2508, grad_fn=<AddBackward0>)
+tensor(3.2249, grad_fn=<AddBackward0>)
+tensor(3.2300, grad_fn=<AddBackward0>)
+tensor(3.2179, grad_fn=<AddBackward0>)
+tensor(3.2276, grad_fn=<AddBackward0>)
+tensor(3.2211, grad_fn=<AddBackward0>)
+tensor(3.2281, grad_fn=<AddBackward0>)
+tensor(3.2181, grad_fn=<AddBackward0>)
+Traceback (most recent call last):
+  File "/home/adam/Documents/research_internship/ood_slam/slam_performance_model/scripts/train.py", line 145, in <module>
+    train_model(config)
+  File "/home/adam/Documents/research_internship/ood_slam/slam_performance_model/scripts/train.py", line 101, in train_model
+    loss.backward()
+  File "/home/adam/Documents/research_internship/ood_slam/env/lib/python3.12/site-packages/torch/_tensor.py", line 525, in backward
+    torch.autograd.backward(
+  File "/home/adam/Documents/research_internship/ood_slam/env/lib/python3.12/site-packages/torch/autograd/__init__.py", line 267, in backward
+    _engine_run_backward(
+  File "/home/adam/Documents/research_internship/ood_slam/env/lib/python3.12/site-packages/torch/autograd/graph.py", line 744, in _engine_run_backward
+    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt

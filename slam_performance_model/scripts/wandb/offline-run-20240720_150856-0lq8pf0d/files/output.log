@@ -1,0 +1,50 @@
+Using device: cpu
+Grad norm of alexnet.features.0.weight: 1.672307014465332
+Grad norm of alexnet.features.0.bias: 0.04667576774954796
+Grad norm of alexnet.features.3.weight: 0.4552193880081177
+Grad norm of alexnet.features.3.bias: 0.01782783307135105
+Grad norm of alexnet.features.6.weight: 0.4266955554485321
+Grad norm of alexnet.features.6.bias: 0.021997932344675064
+Grad norm of alexnet.features.8.weight: 0.35584011673927307
+Grad norm of alexnet.features.8.bias: 0.02164667844772339
+Grad norm of alexnet.features.10.weight: 0.37758442759513855
+Grad norm of alexnet.features.10.bias: 0.023700952529907227
+Grad norm of alexnet.classifier.1.weight: 3.501030206680298
+Grad norm of alexnet.classifier.1.bias: 0.04033496603369713
+Grad norm of alexnet.classifier.4.weight: 2.4121627807617188
+Grad norm of alexnet.classifier.4.bias: 0.07605888694524765
+Grad norm of fc1.weight: 1.9484764337539673
+Grad norm of fc1.bias: 0.14939343929290771
+Grad norm of fc2.weight: 1.6877727508544922
+Grad norm of fc2.bias: 0.13458624482154846
+Grad norm of alexnet.features.0.weight: 163.06497192382812
+Grad norm of alexnet.features.0.bias: 6.1633429527282715
+Grad norm of alexnet.features.3.weight: 61.6566162109375
+Grad norm of alexnet.features.3.bias: 2.1082847118377686
+Grad norm of alexnet.features.6.weight: 76.48532104492188
+Grad norm of alexnet.features.6.bias: 2.7623369693756104
+Grad norm of alexnet.features.8.weight: 72.31317901611328
+Grad norm of alexnet.features.8.bias: 3.60703444480896
+Grad norm of alexnet.features.10.weight: 26.059228897094727
+Grad norm of alexnet.features.10.bias: 1.608699083328247
+Grad norm of alexnet.classifier.1.weight: 24.84014892578125
+Grad norm of alexnet.classifier.1.bias: 0.405448317527771
+Grad norm of alexnet.classifier.4.weight: 31.726531982421875
+Grad norm of alexnet.classifier.4.bias: 0.4704699218273163
+Grad norm of fc1.weight: 52.703128814697266
+Grad norm of fc1.bias: 0.8214477300643921
+Grad norm of fc2.weight: 52.259910583496094
+Grad norm of fc2.bias: 0.8061119914054871
+Traceback (most recent call last):
+  File "/home/adam/Documents/research_internship/ood_slam/slam_performance_model/scripts/train.py", line 148, in <module>
+    train_model(config)
+  File "/home/adam/Documents/research_internship/ood_slam/slam_performance_model/scripts/train.py", line 99, in train_model
+    loss.backward()
+  File "/home/adam/Documents/research_internship/ood_slam/env/lib/python3.12/site-packages/torch/_tensor.py", line 525, in backward
+    torch.autograd.backward(
+  File "/home/adam/Documents/research_internship/ood_slam/env/lib/python3.12/site-packages/torch/autograd/__init__.py", line 267, in backward
+    _engine_run_backward(
+  File "/home/adam/Documents/research_internship/ood_slam/env/lib/python3.12/site-packages/torch/autograd/graph.py", line 744, in _engine_run_backward
+    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt

@@ -11,7 +11,8 @@ import torch.optim as optim
 import torch.nn as nn
 from torchvision import transforms
 from torch.utils.data import DataLoader
-from models.alexNetClassifier import AlexNetSLAMClassifier
+from models.alexNetClassifier import AlexNetSLAMClassifier, EMDSquaredLoss, SimpleCNN
+import torch.nn.functional as F
 from utils.dataloader import get_dataloaders
 import wandb
 
@@ -53,13 +54,14 @@ def train_model(config):
     train_loader, val_loader = get_dataloaders(train_dir, val_dir, batch_size, sequence_length, train_transforms, val_transforms)
 
     model = AlexNetSLAMClassifier(config['model']['weights_path'], num_classes=5)
+    # model = SimpleCNN(num_classes=5)
     model = model.to(device)
 
     learning_rate = config['training']['learning_rate']
     num_epochs = config['training']['num_epochs']
 
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.Adam(model.parameters(), lr=learning_rate)
+    optimizer = optim.Adam(model.parameters(), lr=3e-5)
 
     # Log hyperparameters
     wandb.config.update({
@@ -75,19 +77,38 @@ def train_model(config):
         for data, labels in train_loader:
             left_images, right_images = data
             images = torch.cat((left_images, right_images), dim=1).to(device)
+            # img = left_images.to(device)
             labels1, labels2 = labels[:, 0], labels[:, 1]
             labels1, labels2 = labels1.to(device), labels2.to(device)
-            
+
+            # Reset gradients
             optimizer.zero_grad()
+
+            # Forward pass
             outputs1, outputs2 = model(images)
-            loss1, loss2 = criterion(outputs1, labels1), criterion(outputs2, labels2)
-            loss = loss1 + loss2 # Not sure about this step
+            
+            # # Convert labels to one-hot encoding
+            # labels1_one_hot = F.one_hot(labels1, num_classes=5).float()
+            # labels2_one_hot = F.one_hot(labels2, num_classes=5).float()
+
+            # Compute loss
+            loss1 = criterion(outputs1, labels1)
+            loss2 = criterion(outputs2, labels2)
+            loss = loss1 + loss2
+
+
+            # Backward pass
             loss.backward()
+
+
+            # Update model params
             optimizer.step()
-            running_loss += loss.item()
+
+            # Accumulate model params
+            running_loss += loss.item() * batch_size
 
         epoch_loss = running_loss / len(train_loader)
-        print(f"Epoch {epoch+1}/{num_epochs}, Loss: {epoch_loss}")
+        print(f"Epoch {epoch+1}/{num_epochs}, Train loss: {epoch_loss}")
         wandb.log({"train_loss": epoch_loss, "epoch": epoch + 1})
 
         # Validation phase
@@ -97,13 +118,19 @@ def train_model(config):
             for data, labels in val_loader:
                 left_images, right_images = data
                 images = torch.cat((left_images, right_images), dim=1).to(device)
+                # img = left_images.to(device)
                 labels1, labels2 = labels[:, 0], labels[:, 1]
                 labels1, labels2 = labels1.to(device), labels2.to(device)
 
                 outputs1, outputs2 = model(images)
+                
+                # # Convert labels to one-hot encoding
+                # labels1_one_hot = F.one_hot(labels1, num_classes=5).float()
+                # labels2_one_hot = F.one_hot(labels2, num_classes=5).float()
+
                 loss1 = criterion(outputs1, labels1)
                 loss2 = criterion(outputs2, labels2)
-                val_loss += (loss1 + loss2).item()
+                val_loss += (loss1 + loss2).item() * batch_size
 
         epoch_val_loss = val_loss / len(val_loader)
         print(f"Validation Loss: {epoch_val_loss}")
@@ -112,6 +139,7 @@ def train_model(config):
     # Save model
     torch.save(model.state_dict(), "model.pth")
     wandb.save("model.pth")
+
 
 if __name__ == "__main__":
     args = parse_args()

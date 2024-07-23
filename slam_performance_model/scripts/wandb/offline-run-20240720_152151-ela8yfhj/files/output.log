@@ -1,0 +1,47 @@
+Using device: cpu
+Epoch 1/25, Train loss: 207.73206686735946
+Validation Loss: 3.2189805134233223
+Epoch 2/25, Train loss: 206.03172844668163
+Validation Loss: 3.2189039350992226
+Epoch 3/25, Train loss: 206.02997490258707
+Validation Loss: 3.218899795807988
+Epoch 4/25, Train loss: 206.02364392454837
+Validation Loss: 3.218906865062484
+Epoch 5/25, Train loss: 206.02819373045253
+Traceback (most recent call last):
+  File "/home/adam/Documents/research_internship/ood_slam/slam_performance_model/scripts/train.py", line 144, in <module>
+    train_model(config)
+  File "/home/adam/Documents/research_internship/ood_slam/slam_performance_model/scripts/train.py", line 122, in train_model
+    outputs1, outputs2 = model(images)
+                         ^^^^^^^^^^^^^
+  File "/home/adam/Documents/research_internship/ood_slam/env/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1532, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/adam/Documents/research_internship/ood_slam/env/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1541, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/adam/Documents/research_internship/ood_slam/slam_performance_model/models/alexNetClassifier.py", line 29, in forward
+    x = self.alexnet.features(x)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/adam/Documents/research_internship/ood_slam/env/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1532, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/adam/Documents/research_internship/ood_slam/env/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1541, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/adam/Documents/research_internship/ood_slam/env/lib/python3.12/site-packages/torch/nn/modules/container.py", line 217, in forward
+    input = module(input)
+            ^^^^^^^^^^^^^
+  File "/home/adam/Documents/research_internship/ood_slam/env/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1532, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/adam/Documents/research_internship/ood_slam/env/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1541, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/adam/Documents/research_internship/ood_slam/env/lib/python3.12/site-packages/torch/nn/modules/activation.py", line 103, in forward
+    return F.relu(input, inplace=self.inplace)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/adam/Documents/research_internship/ood_slam/env/lib/python3.12/site-packages/torch/nn/functional.py", line 1498, in relu
+    result = torch.relu_(input)
+             ^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt

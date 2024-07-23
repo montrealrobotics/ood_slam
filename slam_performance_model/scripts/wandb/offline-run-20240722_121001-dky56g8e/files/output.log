@@ -1,0 +1,53 @@
+/opt/conda/lib/python3.10/site-packages/torch/nn/modules/conv.py:456: UserWarning: Applied workaround for CuDNN issue, install nvrtc.so (Triggered internally at /opt/conda/conda-bld/pytorch_1716905971132/work/aten/src/ATen/native/cudnn/Conv_v8.cpp:84.)
+  return F.conv2d(input, weight, bias, self.stride,
+Using device: cuda
+Epoch 1/25, Train loss: 226.84783529997665
+Validation Loss: 202.06086602268448
+Epoch 2/25, Train loss: 202.29683368467414
+Validation Loss: 200.30254593814712
+Epoch 3/25, Train loss: 199.9774453299386
+Validation Loss: 197.88606280591114
+Epoch 4/25, Train loss: 197.71893264922588
+Validation Loss: 196.52652529061558
+Epoch 5/25, Train loss: 195.5305799313162
+Validation Loss: 194.98763909397354
+Epoch 6/25, Train loss: 193.25172809588156
+Validation Loss: 194.00942625482398
+Epoch 7/25, Train loss: 190.9351194768253
+Validation Loss: 191.81384424416416
+Epoch 8/25, Train loss: 187.9631512410617
+Validation Loss: 191.14905327486704
+Epoch 9/25, Train loss: 184.78296374957822
+Validation Loss: 188.93889921257295
+Epoch 10/25, Train loss: 181.5609121227581
+Validation Loss: 187.75114633950844
+Epoch 11/25, Train loss: 178.49771995164232
+Validation Loss: 186.94769185996918
+Epoch 12/25, Train loss: 174.80997429020778
+Validation Loss: 185.54231151902533
+Epoch 13/25, Train loss: 170.75380922235126
+Validation Loss: 184.5940170288086
+Epoch 14/25, Train loss: 166.7893998155562
+Validation Loss: 185.13075587261153
+Epoch 15/25, Train loss: 161.63088548223047
+Validation Loss: 184.59305397860976
+Epoch 16/25, Train loss: 157.08711465727848
+Validation Loss: 185.07087155997036
+Epoch 17/25, Train loss: 152.205110112694
+Validation Loss: 185.32718318341728
+Epoch 18/25, Train loss: 146.76600606417736
+Validation Loss: 184.3924600991858
+Epoch 19/25, Train loss: 141.75256867266177
+Validation Loss: 185.475001323654
+Epoch 20/25, Train loss: 137.2583159639986
+Validation Loss: 186.39011245176016
+Epoch 21/25, Train loss: 130.94339602650993
+Validation Loss: 191.03535093744117
+Epoch 22/25, Train loss: 126.97808934208562
+Validation Loss: 188.80080349474068
+Epoch 23/25, Train loss: 120.80325081657334
+Validation Loss: 194.26550265392626
+Epoch 24/25, Train loss: 115.28477432403058
+Validation Loss: 196.52788892998754
+Epoch 25/25, Train loss: 110.81435125610757
+Validation Loss: 202.13490589555488
