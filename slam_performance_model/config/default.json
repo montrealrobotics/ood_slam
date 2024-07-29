@@ -8,7 +8,8 @@
     "model": {
       "name": "AlexNet", 
       "num_classes": 10,
-      "weights_path": "/home/adam/Documents/research_internship/ood_slam/slam_performance_model/models/alexnet_weights.pth"
+      "weights_path": "/home/adam/Documents/research_internship/ood_slam/slam_performance_model/models/alexnet_weights.pth",
+      "output_dir": ""
     },
     "training": {
       "num_epochs": 25,

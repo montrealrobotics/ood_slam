@@ -15,6 +15,9 @@ from models.alexNetClassifier import AlexNetSLAMClassifier, EMDSquaredLoss, Simp
 import torch.nn.functional as F
 from utils.dataloader import get_dataloaders
 import wandb
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Train a model")
@@ -26,13 +29,127 @@ def load_config(config_path):
         config = json.load(f)
     return config
 
-def train_model(config):
-# Initialize wandb
+
+def train(model, iterator, optimizer, criterion, device):
+    epoch_loss = 0.0
+    model.train()
+
+    for data, labels in iterator:
+        left_images, right_images = data
+        images = torch.cat((left_images, right_images), dim=1).to(device)
+        labels1, labels2 = labels[:, 0], labels[:, 1]
+        labels1, labels2 = labels1.to(device), labels2.to(device)
+
+        # Reset gradients
+        optimizer.zero_grad()
+
+        # Forward pass
+        outputs1, outputs2 = model(images)
+        
+        # Compute loss
+        loss1 = criterion(outputs1, labels1)
+        loss2 = criterion(outputs2, labels2)
+        loss = loss1 + loss2
+
+        # Backward pass
+        loss.backward()
+
+        # Update model params
+        optimizer.step()
+
+        # Accumulate model params
+        epoch_loss += loss.item() * images.size(0)
+
+    return epoch_loss / len(iterator)
+
+def evaluate(model, iterator, criterion, device):
+    epoch_loss = 0.0
+    model.eval()
+
+    with torch.no_grad():
+        for data, labels in iterator:
+            left_images, right_images = data
+            images = torch.cat((left_images, right_images), dim=1).to(device)
+            labels1, labels2 = labels[:, 0], labels[:, 1]
+            labels1, labels2 = labels1.to(device), labels2.to(device)
+
+            output1, output2 = model(images)
+
+            loss1, loss2 = criterion(output1, labels1), criterion(output2, labels2)
+            loss = loss1 + loss2
+
+            epoch_loss += loss.item() * images.size(0)
+
+    return epoch_loss / len(iterator)
+
+
+def create_aggregated_probability_matrix(model, dataloader, num_classes):
+    """
+    Create a matrix that aggregates the predicted probability distributions 
+    for each true label across all samples in the validation dataset.
+
+    Parameters:
+    - model: The trained PyTorch model.
+    - dataloader: The DataLoader for the validation dataset.
+    - num_classes: The number of classes.
+
+    Returns:
+    - agg_prob_matrix: A 2D numpy array of shape (num_classes, num_classes) 
+                       representing the aggregated probability distributions.
+    """
+
+    model.eval()
+
+    agg_prob_matrix_rotation = np.zeros((num_classes, num_classes))
+    agg_prob_matrix_translation = np.zeros((num_classes, num_classes))
+
+    with torch.no_grad():
+        for data, labels in dataloader:
+            left_images, right_images = data
+            images = torch.cat((left_images, right_images), dim=1).to(device)
+
+            # Forward pass to get outputs
+            outputs1, outputs2 = model(images)
+
+            # Convert outputs to probability distributions
+            prob_dist1 = torch.nn.functional.softmax(outputs1, dim=1)
+            prob_dist2 = torch.nn.functional.softmax(outputs2, dim=1)
+
+            for i in range(prob_dist1.size(0)):
+                true_label = labels[i, 0].item()
+                agg_prob_matrix_rotation[true_label] += prob_dist1[i].cpu().numpy()
+
+            for i in range(prob_dist2.size(0)):
+                true_label = labels[i, 1].item()
+                agg_prob_matrix_translation[true_label] += prob_dist2[i].cpu().numpy()
+    
+    return agg_prob_matrix_rotation, agg_prob_matrix_translation
+
+def visualize_confusion_matrix(matrix, component, output_dir):
+    # Normalize matrix
+    row_sums = matrix.sum(axis=1, keepdims=True)
+    matrix = matrix / row_sums
+
+    plt.figure(figsize=(10, 8))
+    sns.heatmap(matrix, annot=True, fmt=".2f", cmap="Blues",
+                xticklabels=np.arange(len(matrix)), yticklabels=np.arange(len(matrix)))
+    plt.xlabel("Predicted class")
+    plt.ylabel("True class")
+    plt.title(f"Aggregated Probability Distribution Matrix ({component})")
+
+    plt.savefig(f"{output_dir}/aggregated_probability_matrix_{component}.png")
+
+    plt.close()
+
+if __name__ == "__main__":
+    args = parse_args()
+    config = load_config(args.config)
+    
+    # Initialize wandb
     wandb.init(project="ood-slam", entity="udem-mila", mode="offline")
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Using device: {device}")
-
 
     train_transforms = transforms.Compose([
         transforms.Resize((224, 224)),
@@ -50,18 +167,18 @@ def train_model(config):
     val_dir = config['dataset']['val_data_dir']
     batch_size = config['dataset']['batch_size']
     sequence_length = config['dataset']['sequence_length']
+    learning_rate = config['training']['learning_rate']
+    num_epochs = config['training']['num_epochs']
+
 
     train_loader, val_loader = get_dataloaders(train_dir, val_dir, batch_size, sequence_length, train_transforms, val_transforms)
 
     model = AlexNetSLAMClassifier(config['model']['weights_path'], num_classes=5)
-    # model = SimpleCNN(num_classes=5)
-    model = model.to(device)
-
-    learning_rate = config['training']['learning_rate']
-    num_epochs = config['training']['num_epochs']
-
-    criterion = nn.CrossEntropyLoss()
+    
+    criterion = EMDSquaredLoss()
     optimizer = optim.Adam(model.parameters(), lr=3e-5)
+
+    model = model.to(device)
 
     # Log hyperparameters
     wandb.config.update({
@@ -72,76 +189,17 @@ def train_model(config):
     })
 
     for epoch in range(num_epochs):
-        model.train()
-        running_loss = 0.0
-        for data, labels in train_loader:
-            left_images, right_images = data
-            images = torch.cat((left_images, right_images), dim=1).to(device)
-            # img = left_images.to(device)
-            labels1, labels2 = labels[:, 0], labels[:, 1]
-            labels1, labels2 = labels1.to(device), labels2.to(device)
+        train_loss = train(model, train_loader, optimizer, criterion, device)
+        print(f"Epoch {epoch+1}/{num_epochs}, Train loss: {train_loss}")
+        wandb.log({"train_loss": train_loss, "epoch": epoch + 1})
 
-            # Reset gradients
-            optimizer.zero_grad()
+        val_loss = evaluate(model, val_loader, criterion, device)
+        print(f"Epoch {epoch + 1}/{num_epochs}, Val loss: {val_loss}")
+        wandb.log({"val_loss": val_loss, "epoch": epoch + 1})
 
-            # Forward pass
-            outputs1, outputs2 = model(images)
-            
-            # # Convert labels to one-hot encoding
-            # labels1_one_hot = F.one_hot(labels1, num_classes=5).float()
-            # labels2_one_hot = F.one_hot(labels2, num_classes=5).float()
+    output_dir = config['model']['output_dir']
+    torch.save(model.state_dict(), f"{output_dir}/fine_tuned_alexnet_weights.pth")
 
-            # Compute loss
-            loss1 = criterion(outputs1, labels1)
-            loss2 = criterion(outputs2, labels2)
-            loss = loss1 + loss2
-
-
-            # Backward pass
-            loss.backward()
-
-
-            # Update model params
-            optimizer.step()
-
-            # Accumulate model params
-            running_loss += loss.item() * batch_size
-
-        epoch_loss = running_loss / len(train_loader)
-        print(f"Epoch {epoch+1}/{num_epochs}, Train loss: {epoch_loss}")
-        wandb.log({"train_loss": epoch_loss, "epoch": epoch + 1})
-
-        # Validation phase
-        model.eval()
-        val_loss = 0.0
-        with torch.no_grad():
-            for data, labels in val_loader:
-                left_images, right_images = data
-                images = torch.cat((left_images, right_images), dim=1).to(device)
-                # img = left_images.to(device)
-                labels1, labels2 = labels[:, 0], labels[:, 1]
-                labels1, labels2 = labels1.to(device), labels2.to(device)
-
-                outputs1, outputs2 = model(images)
-                
-                # # Convert labels to one-hot encoding
-                # labels1_one_hot = F.one_hot(labels1, num_classes=5).float()
-                # labels2_one_hot = F.one_hot(labels2, num_classes=5).float()
-
-                loss1 = criterion(outputs1, labels1)
-                loss2 = criterion(outputs2, labels2)
-                val_loss += (loss1 + loss2).item() * batch_size
-
-        epoch_val_loss = val_loss / len(val_loader)
-        print(f"Validation Loss: {epoch_val_loss}")
-        wandb.log({"val_loss": epoch_val_loss, "epoch": epoch + 1})
-    
-    # Save model
-    torch.save(model.state_dict(), "model.pth")
-    wandb.save("model.pth")
-
-
-if __name__ == "__main__":
-    args = parse_args()
-    config = load_config(args.config)
-    train_model(config)
+    mat1, mat2 = create_aggregated_probability_matrix(model, val_loader, 5)
+    visualize_confusion_matrix(mat1, "rotation", output_dir)
+    visualize_confusion_matrix(mat2, "translation", output_dir)

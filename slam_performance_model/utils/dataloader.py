@@ -113,6 +113,7 @@ if __name__ == "__main__":
     #     left_images, right_images = data
     #     images = torch.cat((left_images, right_images), dim=1)
     #     labels1, labels2 = labels[:, 0], labels[:, 1]
+    #     print(images.size(0))
 
     #     print(images)
 
