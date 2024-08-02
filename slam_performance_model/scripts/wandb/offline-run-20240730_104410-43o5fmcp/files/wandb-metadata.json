@@ -1,0 +1,143 @@
+{
+    "os": "Linux-6.8.0-38-generic-x86_64-with-glibc2.39",
+    "python": "3.12.3",
+    "heartbeatAt": "2024-07-30T14:44:10.510017",
+    "startedAt": "2024-07-30T14:44:10.423190",
+    "docker": null,
+    "cuda": null,
+    "args": [
+        "--config",
+        "../config/default.json"
+    ],
+    "state": "running",
+    "program": "/home/adam/Documents/research_internship/ood_slam/slam_performance_model/scripts/train.py",
+    "codePathLocal": "train.py",
+    "codePath": "slam_performance_model/scripts/train.py",
+    "git": {
+        "remote": "https://github.com/montrealrobotics/ood_slam.git",
+        "commit": "dbba99342bc2f8c800a3dd232105e489ed9ddfd7"
+    },
+    "email": "adam14011999@gmail.com",
+    "root": "/home/adam/Documents/research_internship/ood_slam",
+    "host": "adam-XPS-15-9530",
+    "username": "adam",
+    "executable": "/home/adam/Documents/research_internship/ood_slam/env/bin/python3",
+    "cpu_count": 14,
+    "cpu_count_logical": 20,
+    "cpu_freq": {
+        "current": 913.6922999999999,
+        "min": 400.0,
+        "max": 4400.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 447.466,
+            "min": 400.0,
+            "max": 4800.0
+        },
+        {
+            "current": 400.0,
+            "min": 400.0,
+            "max": 4800.0
+        },
+        {
+            "current": 896.477,
+            "min": 400.0,
+            "max": 4800.0
+        },
+        {
+            "current": 400.0,
+            "min": 400.0,
+            "max": 4800.0
+        },
+        {
+            "current": 400.0,
+            "min": 400.0,
+            "max": 5000.0
+        },
+        {
+            "current": 400.0,
+            "min": 400.0,
+            "max": 5000.0
+        },
+        {
+            "current": 2000.0,
+            "min": 400.0,
+            "max": 5000.0
+        },
+        {
+            "current": 400.0,
+            "min": 400.0,
+            "max": 5000.0
+        },
+        {
+            "current": 971.604,
+            "min": 400.0,
+            "max": 4800.0
+        },
+        {
+            "current": 400.0,
+            "min": 400.0,
+            "max": 4800.0
+        },
+        {
+            "current": 400.344,
+            "min": 400.0,
+            "max": 4800.0
+        },
+        {
+            "current": 400.0,
+            "min": 400.0,
+            "max": 4800.0
+        },
+        {
+            "current": 1598.741,
+            "min": 400.0,
+            "max": 3700.0
+        },
+        {
+            "current": 1600.016,
+            "min": 400.0,
+            "max": 3700.0
+        },
+        {
+            "current": 1609.615,
+            "min": 400.0,
+            "max": 3700.0
+        },
+        {
+            "current": 1682.672,
+            "min": 400.0,
+            "max": 3700.0
+        },
+        {
+            "current": 1840.757,
+            "min": 400.0,
+            "max": 3700.0
+        },
+        {
+            "current": 1125.065,
+            "min": 400.0,
+            "max": 3700.0
+        },
+        {
+            "current": 1595.502,
+            "min": 400.0,
+            "max": 3700.0
+        },
+        {
+            "current": 1147.261,
+            "min": 400.0,
+            "max": 3700.0
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 467.34664154052734,
+            "used": 183.4841766357422
+        }
+    },
+    "memory": {
+        "total": 15.293197631835938
+    }
+}

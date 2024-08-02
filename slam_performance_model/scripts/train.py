@@ -40,6 +40,12 @@ def train(model, iterator, optimizer, criterion, device):
         labels1, labels2 = labels[:, 0], labels[:, 1]
         labels1, labels2 = labels1.to(device), labels2.to(device)
 
+
+        # One-hot encode the labels
+        labels1_one_hot = F.one_hot(labels1, num_classes=5).float()
+        labels2_one_hot = F.one_hot(labels2, num_classes=5).float()
+
+
         # Reset gradients
         optimizer.zero_grad()
 
@@ -47,8 +53,8 @@ def train(model, iterator, optimizer, criterion, device):
         outputs1, outputs2 = model(images)
         
         # Compute loss
-        loss1 = criterion(outputs1, labels1)
-        loss2 = criterion(outputs2, labels2)
+        loss1 = criterion(outputs1, labels1_one_hot)
+        loss2 = criterion(outputs2, labels2_one_hot)
         loss = loss1 + loss2
 
         # Backward pass
@@ -73,9 +79,13 @@ def evaluate(model, iterator, criterion, device):
             labels1, labels2 = labels[:, 0], labels[:, 1]
             labels1, labels2 = labels1.to(device), labels2.to(device)
 
+            # One-hot encode the labels
+            labels1_one_hot = F.one_hot(labels1, num_classes=5).float()
+            labels2_one_hot = F.one_hot(labels2, num_classes=5).float()
+
             output1, output2 = model(images)
 
-            loss1, loss2 = criterion(output1, labels1), criterion(output2, labels2)
+            loss1, loss2 = criterion(output1, labels1_one_hot), criterion(output2, labels2_one_hot)
             loss = loss1 + loss2
 
             epoch_loss += loss.item() * images.size(0)
@@ -111,9 +121,11 @@ def create_aggregated_probability_matrix(model, dataloader, num_classes):
             # Forward pass to get outputs
             outputs1, outputs2 = model(images)
 
+
             # Convert outputs to probability distributions
-            prob_dist1 = torch.nn.functional.softmax(outputs1, dim=1)
-            prob_dist2 = torch.nn.functional.softmax(outputs2, dim=1)
+            prob_dist1 = torch.exp(torch.log_softmax(outputs1, dim=1))
+            prob_dist2 = torch.exp(torch.log_softmax(outputs2, dim=1))
+
 
             for i in range(prob_dist1.size(0)):
                 true_label = labels[i, 0].item()
@@ -140,6 +152,9 @@ def visualize_confusion_matrix(matrix, component, output_dir):
     plt.savefig(f"{output_dir}/aggregated_probability_matrix_{component}.png")
 
     plt.close()
+
+def count_parameters(model):
+    return sum(p.numel() for p in model.parameters() if p.requires_grad)
 
 if __name__ == "__main__":
     args = parse_args()
@@ -174,9 +189,15 @@ if __name__ == "__main__":
     train_loader, val_loader = get_dataloaders(train_dir, val_dir, batch_size, sequence_length, train_transforms, val_transforms)
 
     model = AlexNetSLAMClassifier(config['model']['weights_path'], num_classes=5)
+
+    output_dir = config['model']['output_dir']
     
     criterion = EMDSquaredLoss()
-    optimizer = optim.Adam(model.parameters(), lr=3e-5)
+    params = (param for param in model.parameters() if param.requires_grad)
+    optimizer = optim.Adam(params, lr=3e-5)
+
+    print(f'The model has {count_parameters(model):,} trainable parameters')
+    
 
     model = model.to(device)
 
@@ -200,6 +221,9 @@ if __name__ == "__main__":
     output_dir = config['model']['output_dir']
     torch.save(model.state_dict(), f"{output_dir}/fine_tuned_alexnet_weights.pth")
 
+
+
     mat1, mat2 = create_aggregated_probability_matrix(model, val_loader, 5)
+
     visualize_confusion_matrix(mat1, "rotation", output_dir)
     visualize_confusion_matrix(mat2, "translation", output_dir)

@@ -1,0 +1,1 @@
+No freezing of the weights, emd loss, lr = 3e-5
