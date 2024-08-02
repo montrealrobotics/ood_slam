@@ -20,10 +20,10 @@ class AlexNetSLAMClassifier(nn.Module):
         nn.init.kaiming_normal_(self.features[0].weight)
         nn.init.constant_(self.features[0].bias, 0)
 
-        # # Freeze all layers except the first and the classifier
-        # for name, param in self.features.named_parameters():
-        #     if name != "0.weight" and name != "0.bias":
-        #         param.requires_grad = False
+        # Freeze all layers except the first and the classifier
+        for name, param in self.features.named_parameters():
+            if name != "0.weight" and name != "0.bias":
+                param.requires_grad = False
 
         self.avgpool = nn.AdaptiveAvgPool2d((6, 6))
 
@@ -42,9 +42,8 @@ class AlexNetSLAMClassifier(nn.Module):
 
         self._initialize_weights()
 
-        # for name, param in self.classifier.named_parameters():
-        #     if name == "1.weight" or name == "1.bias":
-        #         param.requires_grad = False
+        for name, param in self.classifier.named_parameters():
+            param.requires_grad = False
 
 
     def forward(self, x):

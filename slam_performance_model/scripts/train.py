@@ -144,7 +144,8 @@ def visualize_confusion_matrix(matrix, component, output_dir):
 
     plt.figure(figsize=(10, 8))
     sns.heatmap(matrix, annot=True, fmt=".2f", cmap="Blues",
-                xticklabels=np.arange(len(matrix)), yticklabels=np.arange(len(matrix)))
+                xticklabels=np.arange(len(matrix)), yticklabels=np.arange(len(matrix)),
+                vmin=0, vmax=1)
     plt.xlabel("Predicted class")
     plt.ylabel("True class")
     plt.title(f"Aggregated Probability Distribution Matrix ({component})")
@@ -194,7 +195,7 @@ if __name__ == "__main__":
     
     criterion = EMDSquaredLoss()
     params = (param for param in model.parameters() if param.requires_grad)
-    optimizer = optim.Adam(params, lr=3e-5)
+    optimizer = optim.Adam(params, lr=0.001)
 
     print(f'The model has {count_parameters(model):,} trainable parameters')
     
