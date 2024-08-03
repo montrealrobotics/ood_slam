@@ -202,7 +202,7 @@ if __name__ == "__main__":
         {'params': model.features[0].parameters(), 'lr': new_lr},
         {'params': model.fc1.parameters(), 'lr': new_lr},
         {'params': model.fc2.parameters(), 'lr': new_lr},
-        {'params': model.classifier[4].parameters(), 'lr': pretrained_lr}
+        {'params': model.classifier.parameters(), 'lr': pretrained_lr}
     ]
     optimizer = optim.Adam(params)
 

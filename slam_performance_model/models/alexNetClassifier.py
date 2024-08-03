@@ -39,9 +39,9 @@ class AlexNetSLAMClassifier(nn.Module):
         self.fc1 = nn.Linear(4096, num_classes) # first RPE component
         self.fc2 = nn.Linear(4096, num_classes) # first RPE component
 
-        for name, param in self.classifier.named_parameters():
-            if name == "1.weight" or name == "1.bias":
-                param.requires_grad = False
+        # for name, param in self.classifier.named_parameters():
+        #     if name == "1.weight" or name == "1.bias":
+        #         param.requires_grad = False
 
         self._initialize_weights()
 
