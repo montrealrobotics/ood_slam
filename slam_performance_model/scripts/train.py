@@ -162,7 +162,7 @@ if __name__ == "__main__":
     config = load_config(args.config)
     
     # Initialize wandb
-    wandb.init(project="ood-slam", entity="udem-mila", mode="offline")
+    wandb.init(project="ood-slam", entity="udem-mila", mode="offline", name="alexnet_ce")
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Using device: {device}")
@@ -193,9 +193,9 @@ if __name__ == "__main__":
 
     output_dir = config['model']['output_dir']
     
-    criterion = EMDSquaredLoss()
+    criterion = nn.CrossEntropyLoss()
     params = (param for param in model.parameters() if param.requires_grad)
-    optimizer = optim.Adam(params, lr=0.001)
+    optimizer = optim.Adam(params, lr=1e-5)
 
     print(f'The model has {count_parameters(model):,} trainable parameters')
     
