@@ -195,7 +195,7 @@ if __name__ == "__main__":
     
     criterion = EMDSquaredLoss()
 
-    pretrained_lr = 1e-5
+    pretrained_lr = 1e-4
     new_lr = 1e-3
 
     params = [
