@@ -22,7 +22,7 @@ class AlexNetSLAMClassifier(nn.Module):
 
         # Freeze all layers except the first and the classifier
         for name, param in self.features.named_parameters():
-            if name != "0.weight" and name != "0.bias":
+            if (name != "0.weight" and name != "0.bias") and (name != "10.weight" and name != "10.bias"):
                 param.requires_grad = False
 
         self.avgpool = nn.AdaptiveAvgPool2d((6, 6))
