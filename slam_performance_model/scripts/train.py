@@ -194,8 +194,17 @@ if __name__ == "__main__":
     output_dir = config['model']['output_dir']
     
     criterion = EMDSquaredLoss()
-    params = (param for param in model.parameters() if param.requires_grad)
-    optimizer = optim.Adam(params, lr=0.001)
+
+    pretrained_lr = 1e-5
+    new_lr = 1e-3
+
+    params = [
+        {'params': model.features[0].parameters(), 'lr': new_lr},
+        {'params': model.fc1.parameters(), 'lr': new_lr},
+        {'params': model.fc2.parameters(), 'lr': new_lr},
+        {'params': model.classifier[4].parameters(), 'lr': pretrained_lr}
+    ]
+    optimizer = optim.Adam(params)
 
     print(f'The model has {count_parameters(model):,} trainable parameters')
     

@@ -58,8 +58,8 @@ class AlexNetSLAMClassifier(nn.Module):
         return out1, out2
     
     def _initialize_weights(self):
-        nn.init.kaiming_normal_(self.classifier[4].weight)
-        nn.init.constant_(self.classifier[4].bias, 0)
+        # nn.init.kaiming_normal_(self.classifier[4].weight)
+        # nn.init.constant_(self.classifier[4].bias, 0)
         nn.init.kaiming_normal_(self.fc1.weight)
         nn.init.constant_(self.fc1.bias, 0)
         nn.init.kaiming_normal_(self.fc2.weight)
