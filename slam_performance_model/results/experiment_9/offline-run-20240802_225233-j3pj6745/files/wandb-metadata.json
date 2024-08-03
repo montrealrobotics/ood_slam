@@ -1,0 +1,284 @@
+{
+    "os": "Linux-4.18.0-513.24.1.el8_9.x86_64-x86_64-with-glibc2.35",
+    "python": "3.10.14",
+    "heartbeatAt": "2024-08-03T02:52:34.124598",
+    "startedAt": "2024-08-03T02:52:33.993287",
+    "docker": null,
+    "cuda": null,
+    "args": [
+        "--config",
+        "/home/adamb14/scratch/config/config_ce.json"
+    ],
+    "state": "running",
+    "program": "/ood_slam/scripts/train.py",
+    "codePathLocal": null,
+    "host": "ng10402.narval.calcul.quebec",
+    "username": "adamb14",
+    "executable": "/opt/conda/bin/python3",
+    "cpu_count": 48,
+    "cpu_count_logical": 48,
+    "cpu_freq": {
+        "current": 2745.1852916666644,
+        "min": 0.0,
+        "max": 0.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 2645.006,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2645.006,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3612.335,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2645.006,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2645.006,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2645.006,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2645.006,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2645.006,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2645.006,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3569.249,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2645.006,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2645.006,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2645.006,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2645.006,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2645.006,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2645.006,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2645.006,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2645.006,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2645.006,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2645.006,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2645.006,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2645.006,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2645.006,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2645.006,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3616.696,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2645.006,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3618.046,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2645.006,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2645.006,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2645.006,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 3617.31,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2645.006,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2645.006,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2645.006,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2645.006,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2645.006,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2645.006,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2645.006,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2645.006,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2645.006,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2645.006,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2645.006,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2645.006,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2645.006,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2645.006,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2645.006,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2645.006,
+            "min": 0.0,
+            "max": 0.0
+        },
+        {
+            "current": 2645.006,
+            "min": 0.0,
+            "max": 0.0
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 0.0625,
+            "used": 1.1444091796875e-05
+        }
+    },
+    "gpu": "NVIDIA A100-SXM4-40GB",
+    "gpu_count": 1,
+    "gpu_devices": [
+        {
+            "name": "NVIDIA A100-SXM4-40GB",
+            "memory_total": 42949672960
+        }
+    ],
+    "memory": {
+        "total": 503.4875831604004
+    }
+}
