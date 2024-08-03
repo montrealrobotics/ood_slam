@@ -148,7 +148,7 @@ if __name__ == "__main__":
     config = load_config(args.config)
     
     # Initialize wandb
-    wandb.init(project="ood-slam", entity="udem-mila", mode="offline")
+    wandb.init(project="ood-slam", entity="udem-mila", mode="offline", name="alexnet_regression")
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Using device: {device}")
