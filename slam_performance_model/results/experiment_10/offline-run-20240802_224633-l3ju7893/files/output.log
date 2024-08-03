@@ -1,0 +1,54 @@
+Using device: cuda
+The model has 57,068,042 trainable parameters
+Epoch 1/25, Train loss: 99.89081069242914
+Epoch 1/25, Val loss: 96.17170587217952
+Epoch 2/25, Train loss: 95.8687660979274
+Epoch 2/25, Val loss: 93.68390689556857
+Epoch 3/25, Train loss: 93.05782803348528
+Epoch 3/25, Val loss: 91.13838384237634
+Epoch 4/25, Train loss: 90.5553734690644
+Epoch 4/25, Val loss: 89.73935777595244
+Epoch 5/25, Train loss: 87.9189726696458
+Epoch 5/25, Val loss: 87.63339938744005
+Epoch 6/25, Train loss: 85.9128164579702
+Epoch 6/25, Val loss: 86.70928448654082
+Epoch 7/25, Train loss: 83.84746608227195
+Epoch 7/25, Val loss: 85.61904580621834
+Epoch 8/25, Train loss: 81.74260659946556
+Epoch 8/25, Val loss: 84.49164958172534
+Epoch 9/25, Train loss: 79.61940600943328
+Epoch 9/25, Val loss: 83.33975980368005
+Epoch 10/25, Train loss: 78.08893712493668
+Epoch 10/25, Val loss: 83.32377009219434
+Epoch 11/25, Train loss: 76.45923349073163
+Epoch 11/25, Val loss: 81.6236757427813
+Epoch 12/25, Train loss: 74.45931546315798
+Epoch 12/25, Val loss: 81.3152071309377
+Epoch 13/25, Train loss: 72.8381235548032
+Epoch 13/25, Val loss: 81.49605294595281
+Epoch 14/25, Train loss: 71.18829098729992
+Epoch 14/25, Val loss: 81.51013286860592
+Epoch 15/25, Train loss: 69.659111810285
+Epoch 15/25, Val loss: 80.047648628074
+Epoch 16/25, Train loss: 68.43277038054609
+Epoch 16/25, Val loss: 79.65591187505837
+Epoch 17/25, Train loss: 66.97986766270229
+Epoch 17/25, Val loss: 79.63623739725136
+Epoch 18/25, Train loss: 65.75241971411974
+Epoch 18/25, Val loss: 80.81152635022818
+Epoch 19/25, Train loss: 64.55347640173775
+Epoch 19/25, Val loss: 79.17721447599939
+Epoch 20/25, Train loss: 63.060559469204016
+Epoch 20/25, Val loss: 78.83286971069244
+Epoch 21/25, Train loss: 61.600641192787904
+Epoch 21/25, Val loss: 78.94321571057101
+Epoch 22/25, Train loss: 60.73416740316093
+Epoch 22/25, Val loss: 79.58609833200293
+Epoch 23/25, Train loss: 59.530511303201465
+Epoch 23/25, Val loss: 78.60913615628897
+Epoch 24/25, Train loss: 58.02474485916949
+Epoch 24/25, Val loss: 78.21815937542054
+Epoch 25/25, Train loss: 56.5100498702439
+Epoch 25/25, Val loss: 78.27059768481426
+/opt/conda/lib/python3.10/site-packages/torch/nn/modules/conv.py:456: UserWarning: Applied workaround for CuDNN issue, install nvrtc.so (Triggered internally at /opt/conda/conda-bld/pytorch_1716905971132/work/aten/src/ATen/native/cudnn/Conv_v8.cpp:84.)
+  return F.conv2d(input, weight, bias, self.stride,
