@@ -40,12 +40,6 @@ def train(model, iterator, optimizer, criterion, device):
         labels1, labels2 = labels[:, 0], labels[:, 1]
         labels1, labels2 = labels1.to(device), labels2.to(device)
 
-
-        # One-hot encode the labels
-        labels1_one_hot = F.one_hot(labels1, num_classes=5).float()
-        labels2_one_hot = F.one_hot(labels2, num_classes=5).float()
-
-
         # Reset gradients
         optimizer.zero_grad()
 
@@ -53,8 +47,8 @@ def train(model, iterator, optimizer, criterion, device):
         outputs1, outputs2 = model(images)
         
         # Compute loss
-        loss1 = criterion(outputs1, labels1_one_hot)
-        loss2 = criterion(outputs2, labels2_one_hot)
+        loss1 = criterion(outputs1, labels1)
+        loss2 = criterion(outputs2, labels2)
         loss = loss1 + loss2
 
         # Backward pass
@@ -79,13 +73,10 @@ def evaluate(model, iterator, criterion, device):
             labels1, labels2 = labels[:, 0], labels[:, 1]
             labels1, labels2 = labels1.to(device), labels2.to(device)
 
-            # One-hot encode the labels
-            labels1_one_hot = F.one_hot(labels1, num_classes=5).float()
-            labels2_one_hot = F.one_hot(labels2, num_classes=5).float()
 
             output1, output2 = model(images)
 
-            loss1, loss2 = criterion(output1, labels1_one_hot), criterion(output2, labels2_one_hot)
+            loss1, loss2 = criterion(output1, labels1), criterion(output2, labels2)
             loss = loss1 + loss2
 
             epoch_loss += loss.item() * images.size(0)
