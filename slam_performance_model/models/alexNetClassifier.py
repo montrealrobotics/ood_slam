@@ -39,11 +39,11 @@ class AlexNetSLAMClassifier(nn.Module):
         self.fc1 = nn.Linear(4096, num_classes) # first RPE component
         self.fc2 = nn.Linear(4096, num_classes) # first RPE component
 
+        for name, param in self.classifier.named_parameters():
+            if name == "1.weight" or name == "1.bias":
+                param.requires_grad = False
 
         self._initialize_weights()
-
-        for name, param in self.classifier.named_parameters():
-            param.requires_grad = False
 
 
     def forward(self, x):
@@ -58,10 +58,8 @@ class AlexNetSLAMClassifier(nn.Module):
         return out1, out2
     
     def _initialize_weights(self):
-        # for m in self.classifier:
-        #     if isinstance(m, nn.Linear):
-        #         nn.init.kaiming_normal_(m.weight)
-        #         nn.init.constant_(m.bias, 0)
+        nn.init.kaiming_normal_(self.classifier[4].weight)
+        nn.init.constant_(self.classifier[4].bias, 0)
         nn.init.kaiming_normal_(self.fc1.weight)
         nn.init.constant_(self.fc1.bias, 0)
         nn.init.kaiming_normal_(self.fc2.weight)
