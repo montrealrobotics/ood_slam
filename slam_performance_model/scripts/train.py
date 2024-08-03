@@ -11,7 +11,7 @@ import torch.optim as optim
 import torch.nn as nn
 from torchvision import transforms
 from torch.utils.data import DataLoader
-from models.alexNetClassifier import AlexNetSLAMClassifier, EMDSquaredLoss, SimpleCNN
+from models.alexNetRegression import AlexNetSLAMRegressor
 import torch.nn.functional as F
 from utils.dataloader import get_dataloaders
 import wandb
@@ -37,25 +37,17 @@ def train(model, iterator, optimizer, criterion, device):
     for data, labels in iterator:
         left_images, right_images = data
         images = torch.cat((left_images, right_images), dim=1).to(device)
-        labels1, labels2 = labels[:, 0], labels[:, 1]
-        labels1, labels2 = labels1.to(device), labels2.to(device)
-
-
-        # One-hot encode the labels
-        labels1_one_hot = F.one_hot(labels1, num_classes=5).float()
-        labels2_one_hot = F.one_hot(labels2, num_classes=5).float()
-
+        labels = labels.to(device)
 
         # Reset gradients
         optimizer.zero_grad()
 
         # Forward pass
-        outputs1, outputs2 = model(images)
+        outputs = model(images)
         
         # Compute loss
-        loss1 = criterion(outputs1, labels1_one_hot)
-        loss2 = criterion(outputs2, labels2_one_hot)
-        loss = loss1 + loss2
+        loss = criterion(outputs, labels)
+
 
         # Backward pass
         loss.backward()
@@ -76,17 +68,11 @@ def evaluate(model, iterator, criterion, device):
         for data, labels in iterator:
             left_images, right_images = data
             images = torch.cat((left_images, right_images), dim=1).to(device)
-            labels1, labels2 = labels[:, 0], labels[:, 1]
-            labels1, labels2 = labels1.to(device), labels2.to(device)
+            labels = labels.to(device)
 
-            # One-hot encode the labels
-            labels1_one_hot = F.one_hot(labels1, num_classes=5).float()
-            labels2_one_hot = F.one_hot(labels2, num_classes=5).float()
+            outputs = model(images)
 
-            output1, output2 = model(images)
-
-            loss1, loss2 = criterion(output1, labels1_one_hot), criterion(output2, labels2_one_hot)
-            loss = loss1 + loss2
+            loss = criterion(outputs, labels)
 
             epoch_loss += loss.item() * images.size(0)
 
@@ -189,13 +175,13 @@ if __name__ == "__main__":
 
     train_loader, val_loader = get_dataloaders(train_dir, val_dir, batch_size, sequence_length, train_transforms, val_transforms)
 
-    model = AlexNetSLAMClassifier(config['model']['weights_path'], num_classes=5)
+    model = AlexNetSLAMRegressor(config['model']['weights_path'])
 
     output_dir = config['model']['output_dir']
     
-    criterion = EMDSquaredLoss()
+    criterion = nn.MSELoss()
     params = (param for param in model.parameters() if param.requires_grad)
-    optimizer = optim.Adam(params, lr=0.001)
+    optimizer = optim.Adam(params, lr=1e-5)
 
     print(f'The model has {count_parameters(model):,} trainable parameters')
     
@@ -224,7 +210,7 @@ if __name__ == "__main__":
 
 
 
-    mat1, mat2 = create_aggregated_probability_matrix(model, val_loader, 5)
+    # mat1, mat2 = create_aggregated_probability_matrix(model, val_loader, 5)
 
-    visualize_confusion_matrix(mat1, "rotation", output_dir)
-    visualize_confusion_matrix(mat2, "translation", output_dir)
+    # visualize_confusion_matrix(mat1, "rotation", output_dir)
+    # visualize_confusion_matrix(mat2, "translation", output_dir)

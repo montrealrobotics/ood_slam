@@ -24,7 +24,7 @@ class StereoSLAMDataset(Dataset):
 
         img0_dir = os.path.join(data_dir, 'images', 'image_0')
         img1_dir = os.path.join(data_dir, 'images', 'image_1')
-        label_dir = os.path.join(data_dir, 'labels', 'classification')
+        label_dir = os.path.join(data_dir, 'labels', 'regression')
 
         img_files = sorted([f for f in os.listdir(img0_dir) if f.endswith('.png')])
 
