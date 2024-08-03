@@ -1,2 +1,3 @@
-different learning rates for alexnet unfrozen layers (classifier's 2 fc layers: 1e-5) and added fc layers (1e-3)
 emd loss
+all layers except the first one , the second fc layer of the classifier and the last 2 fc layers are frozen
+learning rate: 0.001 (added layers), 0.00001 (alexnet layers)
