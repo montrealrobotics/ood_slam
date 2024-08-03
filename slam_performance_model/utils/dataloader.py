@@ -73,7 +73,6 @@ class StereoSLAMDataset(Dataset):
         left_images = torch.stack(left_images) if self.sequence_length > 1 else left_images[0]
         right_images = torch.stack(right_images) if self.sequence_length > 1 else right_images[0]
         label = torch.tensor(label, dtype=torch.float32)
-        label = label.type(torch.LongTensor)
 
         return (left_images, right_images), label
     
