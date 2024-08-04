@@ -30,7 +30,7 @@ def load_config(config_path):
     return config
 
 
-def train(model, iterator, optimizer, criterion, device, num_classes):
+def train(model, iterator, optimizer, criterion, device):
     epoch_loss = 0.0
     model.train()
 
@@ -42,8 +42,8 @@ def train(model, iterator, optimizer, criterion, device, num_classes):
         labels1, labels2 = labels1.to(device), labels2.to(device)
 
         # One-hot encode the labels
-        labels1_one_hot = F.one_hot(labels1, num_classes=num_classes).float()
-        labels2_one_hot = F.one_hot(labels2, num_classes=num_classes).float()
+        labels1_one_hot = F.one_hot(labels1, num_classes=5).float()
+        labels2_one_hot = F.one_hot(labels2, num_classes=5).float()
 
         # Reset gradients
         optimizer.zero_grad()
@@ -67,7 +67,7 @@ def train(model, iterator, optimizer, criterion, device, num_classes):
 
     return epoch_loss / len(iterator)
 
-def evaluate(model, iterator, criterion, device, num_classes):
+def evaluate(model, iterator, criterion, device):
     epoch_loss = 0.0
     model.eval()
 
@@ -80,8 +80,8 @@ def evaluate(model, iterator, criterion, device, num_classes):
             labels1, labels2 = labels1.to(device), labels2.to(device)
 
             # One-hot encode the labels
-            labels1_one_hot = F.one_hot(labels1, num_classes=num_classes).float()
-            labels2_one_hot = F.one_hot(labels2, num_classes=num_classes).float()
+            labels1_one_hot = F.one_hot(labels1, num_classes=5).float()
+            labels2_one_hot = F.one_hot(labels2, num_classes=5).float()
 
             output1, output2 = model(left_images, right_images)
 
