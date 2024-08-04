@@ -195,13 +195,14 @@ if __name__ == "__main__":
     
     criterion = EMDSquaredLoss()
 
-    pretrained_lr = 1e-4
+    pretrained_classifier_lr = 1e-4
+    pretrained_conv_layer_lr = 1e-5
     new_lr = 1e-3
 
     params = [
         {'params': model.features[0].parameters(), 'lr': new_lr},
-        {'params': model.features[10].parameters(), 'lr': pretrained_lr},
-        {'params': model.classifier.parameters(), 'lr': pretrained_lr},
+        {'params': model.features[10].parameters(), 'lr': pretrained_conv_layer_lr},
+        {'params': model.classifier.parameters(), 'lr': pretrained_classifier_lr},
         {'params': model.fc1.parameters(), 'lr': new_lr},
         {'params': model.fc2.parameters(), 'lr': new_lr}
     ]
