@@ -11,7 +11,7 @@ import torch.optim as optim
 import torch.nn as nn
 from torchvision import transforms
 from torch.utils.data import DataLoader
-from models.alexNetClassifier import AlexNetSLAMClassifier, EMDSquaredLoss, SimpleCNN
+from models.alexNetClassifier import AlexNetSLAMClassifier, EMDSquaredLoss, SiameseAlexNet
 import torch.nn.functional as F
 from utils.dataloader import get_dataloaders
 import wandb
@@ -30,27 +30,26 @@ def load_config(config_path):
     return config
 
 
-def train(model, iterator, optimizer, criterion, device):
+def train(model, iterator, optimizer, criterion, device, num_classes):
     epoch_loss = 0.0
     model.train()
 
     for data, labels in iterator:
         left_images, right_images = data
-        images = torch.cat((left_images, right_images), dim=1).to(device)
+        left_images = left_images.to(device)
+        right_images = right_images.to(device)
         labels1, labels2 = labels[:, 0], labels[:, 1]
         labels1, labels2 = labels1.to(device), labels2.to(device)
 
-
         # One-hot encode the labels
-        labels1_one_hot = F.one_hot(labels1, num_classes=5).float()
-        labels2_one_hot = F.one_hot(labels2, num_classes=5).float()
-
+        labels1_one_hot = F.one_hot(labels1, num_classes=num_classes).float()
+        labels2_one_hot = F.one_hot(labels2, num_classes=num_classes).float()
 
         # Reset gradients
         optimizer.zero_grad()
 
         # Forward pass
-        outputs1, outputs2 = model(images)
+        outputs1, outputs2 = model(left_images, right_images)
         
         # Compute loss
         loss1 = criterion(outputs1, labels1_one_hot)
@@ -64,31 +63,32 @@ def train(model, iterator, optimizer, criterion, device):
         optimizer.step()
 
         # Accumulate model params
-        epoch_loss += loss.item() * images.size(0)
+        epoch_loss += loss.item() * left_images.size(0)
 
     return epoch_loss / len(iterator)
 
-def evaluate(model, iterator, criterion, device):
+def evaluate(model, iterator, criterion, device, num_classes):
     epoch_loss = 0.0
     model.eval()
 
     with torch.no_grad():
         for data, labels in iterator:
             left_images, right_images = data
-            images = torch.cat((left_images, right_images), dim=1).to(device)
+            left_images = left_images.to(device)
+            right_images = right_images.to(device)
             labels1, labels2 = labels[:, 0], labels[:, 1]
             labels1, labels2 = labels1.to(device), labels2.to(device)
 
             # One-hot encode the labels
-            labels1_one_hot = F.one_hot(labels1, num_classes=5).float()
-            labels2_one_hot = F.one_hot(labels2, num_classes=5).float()
+            labels1_one_hot = F.one_hot(labels1, num_classes=num_classes).float()
+            labels2_one_hot = F.one_hot(labels2, num_classes=num_classes).float()
 
-            output1, output2 = model(images)
+            output1, output2 = model(left_images, right_images)
 
             loss1, loss2 = criterion(output1, labels1_one_hot), criterion(output2, labels2_one_hot)
             loss = loss1 + loss2
 
-            epoch_loss += loss.item() * images.size(0)
+            epoch_loss += loss.item() * left_images.size(0)
 
     return epoch_loss / len(iterator)
 
@@ -116,10 +116,11 @@ def create_aggregated_probability_matrix(model, dataloader, num_classes):
     with torch.no_grad():
         for data, labels in dataloader:
             left_images, right_images = data
-            images = torch.cat((left_images, right_images), dim=1).to(device)
+            left_images = left_images.to(device)
+            right_images = right_images.to(device)
 
             # Forward pass to get outputs
-            outputs1, outputs2 = model(images)
+            outputs1, outputs2 = model(left_images, right_images)
 
 
             # Convert outputs to probability distributions
@@ -189,7 +190,7 @@ if __name__ == "__main__":
 
     train_loader, val_loader = get_dataloaders(train_dir, val_dir, batch_size, sequence_length, train_transforms, val_transforms)
 
-    model = AlexNetSLAMClassifier(config['model']['weights_path'], num_classes=5)
+    model = SiameseAlexNet(config['model']['weights_path'], num_classes=5)
 
     output_dir = config['model']['output_dir']
     
@@ -200,8 +201,9 @@ if __name__ == "__main__":
     new_lr = 1e-3
 
     params = [
-        {'params': model.features[0].parameters(), 'lr': new_lr},
-        {'params': model.features[10].parameters(), 'lr': pretrained_conv_layer_lr},
+        {'params': model.features_left.parameters(), 'lr': pretrained_conv_layer_lr},
+        {'params': model.features_right.parameters(), 'lr': pretrained_conv_layer_lr},
+        {'params': model.merge_layer.parameters(), 'lr': new_lr}, 
         {'params': model.classifier.parameters(), 'lr': pretrained_classifier_lr},
         {'params': model.fc1.parameters(), 'lr': new_lr},
         {'params': model.fc2.parameters(), 'lr': new_lr}

@@ -37,7 +37,7 @@ class AlexNetSLAMClassifier(nn.Module):
         )
 
         self.fc1 = nn.Linear(4096, num_classes) # first RPE component
-        self.fc2 = nn.Linear(4096, num_classes) # first RPE component
+        self.fc2 = nn.Linear(4096, num_classes) # second RPE component
 
         # for name, param in self.classifier.named_parameters():
         #     if name == "1.weight" or name == "1.bias":
@@ -81,6 +81,56 @@ class SimpleCNN(nn.Module):
         out1 = self.fc1(x)                    # First fully connected layer
         out2 = self.fc2(x)                    # Second fully connected layer
         return out1, out2
+
+
+class SiameseAlexNet(nn.Module):
+    def __init__(self, weights_path, num_classes):
+        super(SiameseAlexNet, self).__init__()
+
+        alexnet_left = models.alexnet()
+        alexnet_right = models.alexnet()
+        alexnet_left.load_state_dict(torch.load(weights_path))
+        alexnet_right.load_state_dict(torch.load(weights_path))
+
+        self.features_left = alexnet_left.features
+        self.features_right = alexnet_right.features
+
+        self.avgpool = nn.AdaptiveAvgPool2d((6, 6))
+
+        self.merge_layer = nn.Linear(256 * 6 * 6 * 2, 256 * 6 * 6)
+
+        self.classifier = nn.Sequential(
+            nn.Dropout(0.5),
+            nn.Linear(256 * 6 * 6, 4096),
+            nn.ReLU(inplace = True),
+            nn.Dropout(0.5),
+            nn.Linear(4096, 4096),
+            nn.ReLU(inplace = True),
+        )
+
+        self.fc1 = nn.Linear(4096, num_classes) # first RPE component
+        self.fc2 = nn.Linear(4096, num_classes) # second RPE component
+
+    def forward(self, left_image, right_image):
+        left_features = self.features_left(left_image)
+        right_features = self.features_right(right_image)
+        
+        left_features = self.avgpool(left_features)
+        right_features = self.avgpool(right_features)
+        
+        left_features = torch.flatten(left_features, 1)
+        right_features = torch.flatten(right_features, 1)
+
+        merged_features = torch.cat((left_features, right_features), dim=1)
+        merged_features = self.merge_layer(merged_features)
+
+        x = self.classifier(merged_features)
+
+        out1 = self.fc1(x)
+        out2 = self.fc2(x)
+
+        return out1, out2
+
     
 # EMD Squared Loss Function
 class EMDSquaredLoss(nn.Module):
