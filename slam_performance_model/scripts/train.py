@@ -78,6 +78,31 @@ def evaluate(model, iterator, criterion, device):
 
     return epoch_loss / len(iterator)
 
+def calculate_r_squared(y_true, y_pred):
+    ss_res = torch.sum((y_true - y_pred) ** 2)
+    ss_tot = torch.sum((y_true - torch.mean(y_true)) ** 2)
+    r2 = 1 - ss_res / ss_tot
+    return r2.item() 
+
+def eval_r_squared(model, iterator, device):
+    model.eval()  # Set the model to evaluation mode
+    y_true_list = []
+    y_pred_list = []
+
+    with torch.no_grad():  # Disable gradient calculation for evaluation
+        for inputs, targets in iterator:
+            left_images, right_images = inputs
+            images = torch.cat((left_images, right_images), dim=1).to(device)
+            targets = targets.to(device)  # Move to the appropriate device
+            outputs = model(images)
+            y_true_list.append(targets)
+            y_pred_list.append(outputs)
+
+    y_true = torch.cat(y_true_list, dim=0)
+    y_pred = torch.cat(y_pred_list, dim=0)
+
+    return calculate_r_squared(y_true, y_pred)
+
 
 def create_aggregated_probability_matrix(model, dataloader, num_classes):
     """
@@ -208,7 +233,8 @@ if __name__ == "__main__":
     output_dir = config['model']['output_dir']
     torch.save(model.state_dict(), f"{output_dir}/fine_tuned_alexnet_weights.pth")
 
-
+    r_squared = eval_r_squared(model, val_loader, device)
+    print(f'R-squared: {r_squared:.4f}')
 
     # mat1, mat2 = create_aggregated_probability_matrix(model, val_loader, 5)
 
