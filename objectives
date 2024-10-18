@@ -1,0 +1,8 @@
+
+- Finish understanding ORBSLAM and be able to log information from it (ORB features, descriptors, keyframes and their locations, information matrix, solver residuals (pre and post solve), ...)
+- More, better, different data (real world datasets (camera, stereo & ground truth))
+- Look into also simulator for new data
+- Re-implement the Ali paper
+- Make a heuristic method
+	- Tools for data analysis 
+- Continue deep learning experiments (larger networks, more data (images and metadata))
